@@ -3673,6 +3673,19 @@ core-util-is@1.0.2, core-util-is@~1.0.0:
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.2.tgz#b5fd54220aa2bc5ab57aab7140c940754503c1a7"
   integrity sha1-tf1UIgqivFq1eqtxQMlAdUUDwac=
 
+cornerstone-core@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/cornerstone-core/-/cornerstone-core-2.3.0.tgz#b16430b0dc3883c795fbbd5f64d0f6357f91c889"
+  integrity sha512-1LiCfRIlQvR1j8OhF7/3pvvQvvnTYZUywEkuoEo5K5mMrlKdrQMS75uW1uXb/nXShQDJyyjtTCQSVGgv2yHA+w==
+
+cornerstone-wado-image-loader@^3.3.1:
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/cornerstone-wado-image-loader/-/cornerstone-wado-image-loader-3.3.1.tgz#2d37a4278f087f9ea66b98dd384c3584bd4f202b"
+  integrity sha512-XckOmywvAmFz61G5/FSk+Thd051sU2peiT/EA1nFQ4uatMKKO6xFuOYcr8qB6pmeiQlUnuOVdX5l7GmYbqfT5w==
+  dependencies:
+    dicom-parser "^1.8.3"
+    pako "^1.0.10"
+
 cosmiconfig@^5.0.0:
   version "5.2.1"
   resolved "https://registry.yarnpkg.com/cosmiconfig/-/cosmiconfig-5.2.1.tgz#040f726809c591e77a17c0a3626ca45b4f168b1a"
@@ -4198,6 +4211,18 @@ dcmjs@^0.17.0:
     loglevelnext "^3.0.1"
     ndarray "^1.0.19"
 
+"dcmjs@https://github.com/WoonchanCho/dcmjs.git#f846bd96a89b9cc69467ff75532083ea311e343a":
+  version "0.11.0"
+  resolved "https://github.com/WoonchanCho/dcmjs.git#f846bd96a89b9cc69467ff75532083ea311e343a"
+  dependencies:
+    "@babel/polyfill" "^7.8.3"
+    "@babel/runtime" "^7.8.4"
+    gl-matrix "^3.1.0"
+    jpeg-lossless-decoder-js "^2.0.4"
+    lodash.clonedeep "^4.5.0"
+    loglevelnext "^3.0.1"
+    ndarray "^1.0.19"
+
 debug@2.6.9, debug@^2.2.0, debug@^2.3.3, debug@^2.6.0, debug@^2.6.9:
   version "2.6.9"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.9.tgz#5d128515df134ff327e90a4c93f4e077a536341f"
@@ -4357,19 +4382,24 @@ detect-port-alt@1.1.6:
     address "^1.0.1"
     debug "^2.6.0"
 
+dicom-parser@^1.8.3, dicom-parser@^1.8.7:
+  version "1.8.7"
+  resolved "https://registry.yarnpkg.com/dicom-parser/-/dicom-parser-1.8.7.tgz#36df15f8b4250e56f164d8a50484c45e0a5668de"
+  integrity sha512-JRh6ciXii1JiDFxd3yUiteNZbOd4Ebmq9HBJlxEJ4Gd1CC5tMIs8zoztK69Ih0UeT96ixbmanb4M2mjaaYT8sg==
+
 dicomedit-uuid@^8.3.2:
   version "8.3.2"
   resolved "https://registry.yarnpkg.com/dicomedit-uuid/-/dicomedit-uuid-8.3.2.tgz#5ccb340ddd1b6db37ae27caf635b3237f15d7bca"
   integrity sha512-45aYYHOHY6gQEKrO/DnOgAWeo8Mvy1GdUO2DhHbBpA+Qm9WQ4wfqAxilIpSsgT5V3NbrVZwJ+nFWGtdehFFCJA==
 
-dicomedit@^0.0.14:
-  version "0.0.14"
-  resolved "https://registry.yarnpkg.com/dicomedit/-/dicomedit-0.0.14.tgz#d18b69c2766596c649fc7068c8184e0bbe9a4f31"
-  integrity sha512-mh7BEhHGesLWfKsfOZq2nsOvQ2BRFzeQzFdjPjt5SLQqaJ1d7S3nTBoczbwd6tLFL/BCKZJW4n77zrGB3J088A==
+dicomedit@^0.0.30:
+  version "0.0.30"
+  resolved "https://registry.yarnpkg.com/dicomedit/-/dicomedit-0.0.30.tgz#c3ec990e82857613291ad3a9e6f087a869771be4"
+  integrity sha512-xzo3v1wUg4JwfLZh+kuJUYGmhv0/8xTYV8zRZnrO0yMimtWCsW0E4TSJxXDkWqt8xHmVjCSL82FR+oX0jY/0tQ==
   dependencies:
     antlr4 "^4.9.1"
     big-integer "^1.6.48"
-    dcmjs "^0.17.0"
+    dcmjs "https://github.com/WoonchanCho/dcmjs.git#f846bd96a89b9cc69467ff75532083ea311e343a"
     debug "^4.3.1"
     dicomedit-uuid "^8.3.2"
     isomorphic-unfetch "^3.1.0"
@@ -7088,6 +7118,11 @@ jest@26.6.0:
     import-local "^3.0.2"
     jest-cli "^26.6.0"
 
+jpeg-lossless-decoder-js@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/jpeg-lossless-decoder-js/-/jpeg-lossless-decoder-js-2.0.4.tgz#137bb4cb4d5bd34fafc7dfb4176cafc30f601e2a"
+  integrity sha512-v12wgbfcNWiusRbIbMuNdMJiC3TsIYOMSLFNMGg5A9ABggOp5yjiRsZRHFtBVk+DD9uvWu74UgI3NWRiHGfKzQ==
+
 "js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-4.0.0.tgz#19203fb59991df98e3a287050d4647cdeaf32499"
@@ -8397,7 +8432,7 @@ p-try@^2.0.0:
   resolved "https://registry.yarnpkg.com/p-try/-/p-try-2.2.0.tgz#cb2868540e313d61de58fafbe35ce9004d5540e6"
   integrity sha512-R4nPAVTAU0B9D35/Gk3uJf/7XYbQcyohSKdvAxIRSNghFl4e71hVoGnBNQz9cWaXxO2I10KTC+3jMdvvoKw6dQ==
 
-pako@~1.0.5:
+pako@^1.0.10, pako@~1.0.5:
   version "1.0.11"
   resolved "https://registry.yarnpkg.com/pako/-/pako-1.0.11.tgz#6c9599d340d54dfd3946380252a35705a6b992bf"
   integrity sha512-4hLB8Py4zZce5s4yd9XzopqwVv/yGNhV1Bl8NTmCq1763HeK2+EwVTv+leGeL13Dnh2wfbqowVPXCIO0z4taYw==

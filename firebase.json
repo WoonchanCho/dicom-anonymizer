@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "site": "testanonymizer",
     "public": "build",
     "ignore": [
       "firebase.json",

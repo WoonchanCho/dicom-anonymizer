@@ -9,7 +9,6 @@ import Button from '@material-ui/core/Button';
 import MuiAlert from '@material-ui/lab/Alert';
 import Snackbar from '@material-ui/core/Snackbar';
 import Typography from '@material-ui/core/Typography';
-import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
@@ -18,7 +17,13 @@ import dcmjs from 'dcmjs';
 import { SAMPLE_DCM } from '../common/constant';
 
 import Anonymizer from 'dicomedit';
-import { transform, isEqual, isObject } from 'lodash';
+import { transform, isEqual, isObject, cloneDeep } from 'lodash';
+
+import cornerstone from 'cornerstone-core';
+import cornerstoneWADOImageLoader from 'cornerstone-wado-image-loader';
+import dicomParser from 'dicom-parser';
+cornerstoneWADOImageLoader.external.cornerstone = cornerstone;
+cornerstoneWADOImageLoader.external.dicomParser = dicomParser;
 
 /**
  * Deep diff between two object, using lodash
@@ -67,6 +72,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Dashboard() {
+  const beforeImageEl = React.useRef(null);
+  const afterImageEl = React.useRef(null);
   const classes = useStyles();
 
   const [dcmFile, setDcmFile] = useState(undefined);
@@ -74,9 +81,11 @@ function Dashboard() {
   const [inputDiff, setInputDiff] = useState(undefined);
   const [outputDict, setOutputDict] = useState(undefined);
   const [outputDiff, setOutputDiff] = useState(undefined);
-  const [buffer, setBuffer] = useState(undefined);
+  const [inputBuffer, setInputBuffer] = useState(undefined);
+  const [outputBuffer, setOutputBuffer] = useState(undefined);
   const [text, setText] = useState(
     `version "6.3"
+alterPixels["rectangle", "l=100, t=100, r=200, b=200", "solid", "v=100"]
 (0008,0080) := "Washington University School of Medicine"
 (0008,0018) := hashUID[(0008,0018)]
 // Add 14 days to Study Date
@@ -88,29 +97,71 @@ function Dashboard() {
 
   const [error, setError] = React.useState({ open: false, message: '' });
 
+  React.useEffect(() => {
+    cornerstone.enable(beforeImageEl.current);
+    cornerstone.enable(afterImageEl.current);
+  }, []);
+
+  React.useEffect(() => {
+    if (!inputBuffer) {
+      return;
+    }
+    const element = beforeImageEl.current;
+    loadImage(inputBuffer, element);
+  }, [inputBuffer]);
+
+  React.useEffect(() => {
+    if (!outputBuffer) {
+      return;
+    }
+    const element = afterImageEl.current;
+    loadImage(outputBuffer, element);
+  }, [outputBuffer]);
+
+  function loadImage(buffer, element) {
+    let cornerStoneImageId = cornerstoneWADOImageLoader.wadouri.fileManager.add(
+      new Blob([buffer])
+    );
+
+    cornerstone.loadImage(cornerStoneImageId).then(
+      function (image) {
+        const viewport = cornerstone.getDefaultViewportForImage(element, image);
+        cornerstone.displayImage(element, image, viewport);
+      },
+      function (err) {
+        // TODO: I dont't know why but someties error object is wrapped in the error.
+        const message = err.error ? err.error.message : err.message;
+        console.log(message);
+      }
+    );
+  }
+
   async function onFileSelected(file) {
+    console.log(file);
     try {
       setDcmFile(file);
-      const buffer = await file.arrayBuffer();
-      await load(buffer);
+      await loadFromBuffer(await file.arrayBuffer());
     } catch (err) {
       setError({ open: true, message: err.message });
     }
   }
 
-  async function load(buffer) {
-    setBuffer(buffer);
+  async function loadFromBuffer(buffer) {
+    setInputBuffer(buffer);
     const anonymizer = new Anonymizer(text, { parserLibrary });
     anonymizer.loadDcm(buffer);
+    const tempDict = cloneDeep(anonymizer.inputDict);
     await anonymizer.applyRules();
 
-    const outputDiff = difference(anonymizer.outputDict, anonymizer.inputDict);
+    const outputBuffer = anonymizer.write();
+    setOutputBuffer(outputBuffer);
 
-    const inputDiff = difference(anonymizer.inputDict, anonymizer.outputDict);
+    const outputDiff = difference(anonymizer.outputDict, tempDict);
+    const inputDiff = difference(tempDict, anonymizer.outputDict);
 
     setOutputDiff(outputDiff);
     setInputDiff(inputDiff);
-    setInputDict(anonymizer.inputDict);
+    setInputDict(tempDict);
     setOutputDict(anonymizer.outputDict);
   }
 
@@ -153,7 +204,7 @@ function Dashboard() {
   async function applySample() {
     try {
       const buffer = _base64ToArrayBuffer(SAMPLE_DCM);
-      await load(buffer);
+      await onFileSelected(new File([buffer], 'sample.dcm'));
     } catch (err) {
       setError({ open: true, message: err.message });
     }
@@ -170,7 +221,7 @@ function Dashboard() {
   }
   async function refreshScript() {
     try {
-      await load(buffer);
+      await loadFromBuffer(inputBuffer);
     } catch (err) {
       setError({ open: true, message: err.message });
     }
@@ -192,7 +243,11 @@ function Dashboard() {
       <Grid container spacing={3} style={{ marginTop: 10 }}>
         <Grid item xs={12} md={6}>
           1. Edit a DicomEdit script. (Please refer to{' '}
-          <a href="https://wiki.xnat.org/xnat-tools/dicomedit" target="_blank">
+          <a
+            href="https://wiki.xnat.org/xnat-tools/dicomedit"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             this
           </a>{' '}
           for the DicomEdit grammar)
@@ -264,17 +319,21 @@ function Dashboard() {
         alignItems="flex-start"
         spacing={2}
       >
-        <Grid item xs={12} md={6} alignItems="flex-start">
+        <Grid item xs={12} md={6}>
           <Typography variant="h5" component="h3">
             Before applying anonymization
           </Typography>
+          <div ref={beforeImageEl} id="beforeImageEl" />
+
           <DicomDump dicomDict={inputDict} diff={inputDiff} />
         </Grid>
 
-        <Grid item xs={12} md={6} alignItems="flex-start">
+        <Grid item xs={12} md={6}>
           <Typography variant="h5" component="h3">
             After applying anonymization
           </Typography>
+          <div ref={afterImageEl} id="afterImageEl" />
+
           <DicomDump dicomDict={outputDict} diff={outputDiff} />
         </Grid>
       </Grid>

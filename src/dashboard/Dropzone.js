@@ -40,7 +40,7 @@ export default function Dropzone({ onFileSelected }) {
     isDragAccept,
     isDragReject,
     acceptedFiles,
-  } = useDropzone({ accept: '.dcm', maxFiles: 1 });
+  } = useDropzone({ maxFiles: 1 });
 
   const style = useMemo(
     () => ({
@@ -53,6 +53,7 @@ export default function Dropzone({ onFileSelected }) {
   );
 
   useEffect(() => {
+    console.log(acceptedFiles);
     if (!acceptedFiles.length) {
       return;
     }
