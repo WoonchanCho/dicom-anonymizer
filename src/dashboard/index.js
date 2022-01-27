@@ -85,7 +85,8 @@ function Dashboard() {
   const [outputBuffer, setOutputBuffer] = useState(undefined);
   const [text, setText] = useState(
     `version "6.3"
-alterPixels["rectangle", "l=100, t=100, r=200, b=200", "solid", "v=100"]
+// alterPixels["rectangle", "l=100, t=100, r=200, b=200", "solid", "v=100"]
+(0008,0020) = "20020628" ? alterPixels["rectangle", "l=100, t=100, r=200, b=200", "solid", "v=100"]
 (0008,0080) := "Washington University School of Medicine"
 (0008,0018) := hashUID[(0008,0018)]
 // Add 14 days to Study Date
@@ -154,6 +155,7 @@ alterPixels["rectangle", "l=100, t=100, r=200, b=200", "solid", "v=100"]
     await anonymizer.applyRules();
 
     const outputBuffer = anonymizer.write();
+    console.log(anonymizer.outputDict);
     setOutputBuffer(outputBuffer);
 
     const outputDiff = difference(anonymizer.outputDict, tempDict);

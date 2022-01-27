@@ -4211,9 +4211,9 @@ dcmjs@^0.17.0:
     loglevelnext "^3.0.1"
     ndarray "^1.0.19"
 
-"dcmjs@https://github.com/WoonchanCho/dcmjs.git#f846bd96a89b9cc69467ff75532083ea311e343a":
+"dcmjs@git+https://github.com/WoonchanCho/dcmjs.git#f846bd96a89b9cc69467ff75532083ea311e343a":
   version "0.11.0"
-  resolved "https://github.com/WoonchanCho/dcmjs.git#f846bd96a89b9cc69467ff75532083ea311e343a"
+  resolved "git+https://github.com/WoonchanCho/dcmjs.git#f846bd96a89b9cc69467ff75532083ea311e343a"
   dependencies:
     "@babel/polyfill" "^7.8.3"
     "@babel/runtime" "^7.8.4"
@@ -4392,10 +4392,10 @@ dicomedit-uuid@^8.3.2:
   resolved "https://registry.yarnpkg.com/dicomedit-uuid/-/dicomedit-uuid-8.3.2.tgz#5ccb340ddd1b6db37ae27caf635b3237f15d7bca"
   integrity sha512-45aYYHOHY6gQEKrO/DnOgAWeo8Mvy1GdUO2DhHbBpA+Qm9WQ4wfqAxilIpSsgT5V3NbrVZwJ+nFWGtdehFFCJA==
 
-dicomedit@^0.0.30:
-  version "0.0.30"
-  resolved "https://registry.yarnpkg.com/dicomedit/-/dicomedit-0.0.30.tgz#c3ec990e82857613291ad3a9e6f087a869771be4"
-  integrity sha512-xzo3v1wUg4JwfLZh+kuJUYGmhv0/8xTYV8zRZnrO0yMimtWCsW0E4TSJxXDkWqt8xHmVjCSL82FR+oX0jY/0tQ==
+dicomedit@^0.0.35:
+  version "0.0.35"
+  resolved "https://registry.yarnpkg.com/dicomedit/-/dicomedit-0.0.35.tgz#e279d0b0c3a2029e7961ecb422c5438f82bc207d"
+  integrity sha512-08p6y8uFuzab3YbWxcMgyNrCjP71vsOhw3aqQYdEdEH7rm/syahLO9cMMeiYvbxSvMLGeMnh6k/fbuk9qY4Y7Q==
   dependencies:
     antlr4 "^4.9.1"
     big-integer "^1.6.48"
